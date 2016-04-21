@@ -4,40 +4,38 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.scene.layout.Pane;
 
 public class MineField extends Application {
 
-    final int TILE_SIZE = 40;
-    final int H = 1000;
-    final int W = 800;
-    final int X_TILES = (W / TILE_SIZE);
-    final int Y_TILES = (H / TILE_SIZE);
+    public final int TILE_SIZE = 40;
+    public final int H = 800;
+    public final int W = 800;
+    public final int X_TILES = (W / TILE_SIZE);
+    public final int Y_TILES = (H / TILE_SIZE);
+
+    public Pane grid;
 
 
 
+    public Cell[][] cellArray = new Cell[X_TILES][Y_TILES];
 
-
-    public Button[][] board = new Button[X_TILES][Y_TILES];
-
-    public GridPane makeBoard() {
-        GridPane grid = new GridPane();
+    public void makeBoard() {
+        //GridPane grid = new GridPane();
         grid.setPrefSize(W, H);
 
         for(int y=0; y<Y_TILES; y++) {
             for(int x=0; x<X_TILES; x++) {
-                Button btn = new Button();
-                btn.setLayoutX(x);
-                btn.setLayoutY(y);
-                board[x][y] = btn;
-                grid.getChildren().add(btn);
+                Cell newCell = new Cell();
+                //Cell.setLayoutX(x);
+                //btn.setLayoutY(y);
+                cellArray[x][y] = newCell;
+                //grid.getChildren().add(newCell.btn);
             }
         }
 
-        return null;
     }
 
     public boolean mark(int column, int row) {
@@ -74,7 +72,8 @@ public class MineField extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("minesweeper.fxml"));
         primaryStage.setTitle("Minesweeper");
-        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.setScene(new Scene(root, W, H));
+        primaryStage.setResizable(false);
         primaryStage.show();
 
     }
