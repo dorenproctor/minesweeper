@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.scene.layout.Pane;
 
@@ -12,7 +11,7 @@ public class MineField extends Application {
 
     public final int TILE_SIZE = 40;
     public final int H = 800;
-    public final int W = 800;
+    public final int W = 720;
     public final int X_TILES = (W / TILE_SIZE);
     public final int Y_TILES = (H / TILE_SIZE);
 
@@ -23,16 +22,12 @@ public class MineField extends Application {
     public Cell[][] cellArray = new Cell[X_TILES][Y_TILES];
 
     public void makeBoard() {
-        //GridPane grid = new GridPane();
         grid.setPrefSize(W, H);
 
-        for(int y=0; y<Y_TILES; y++) {
-            for(int x=0; x<X_TILES; x++) {
+        for(int x=0; x<X_TILES; x++) {
+            for(int y=0; y<Y_TILES; y++) {
                 Cell newCell = new Cell();
-                //Cell.setLayoutX(x);
-                //btn.setLayoutY(y);
                 cellArray[x][y] = newCell;
-                //grid.getChildren().add(newCell.btn);
             }
         }
 
@@ -72,7 +67,7 @@ public class MineField extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("minesweeper.fxml"));
         primaryStage.setTitle("Minesweeper");
-        primaryStage.setScene(new Scene(root, W, H));
+        primaryStage.setScene(new Scene(root, 30*X_TILES, 30*Y_TILES+30));
         primaryStage.setResizable(false);
         primaryStage.show();
 
