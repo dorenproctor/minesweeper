@@ -32,22 +32,29 @@ public class Controller {
     private void startGame() { //happens when first run or when startButton is clicked
         pane.getChildren().removeAll();
         MineField mf = new MineField();
-        mf.grid = pane;
-        mf.makeBoard();
+        mf.generateBoard();
         System.out.println("new game started");
-        System.out.println("x_tot:" + mf.X_TILES + "  y_tot:" + mf.Y_TILES);
+        //System.out.println("x_tot:" + mf.xTiles + "  y_tot:" + mf.yTiles);
 
         addMinefieldButtons(mf);
     }
 
     private void addMinefieldButtons(MineField mf) {
-        for (int x=0; x < mf.X_TILES; x++) {
-            for (int y=0; y < mf.Y_TILES; y++) {
-                System.out.println("X:" + x + "  Y:" + y);
+        for (int x = 0; x < mf.xTiles; x++) {
+            for (int y = 0; y < mf.yTiles; y++) {
+                //System.out.println("X:" + x + "  Y:" + y);
                 Button btn = mf.cellArray[x][y].btn;
                 btn.setLayoutX(30*x);
                 btn.setLayoutY(30*y);
                 btn.setPrefSize(30,30);
+
+                if (mf.cellArray[x][y].hasBomb)
+                    btn.setText("X");
+                else {
+                    String neighboringMines = Integer.toString(mf.cellArray[x][y].neighboringMines);
+                    btn.setText(neighboringMines);
+                    }
+
                 pane.getChildren().add(btn);
                 btn.setOnMouseClicked(event -> {
                     if (event.getButton() == MouseButton.SECONDARY) //right click
