@@ -37,6 +37,7 @@ public class Controller {
         //System.out.println("x_tot:" + mf.xTiles + "  y_tot:" + mf.yTiles);
 
         addMinefieldButtons(mf);
+
     }
 
     private void addMinefieldButtons(MineField mf) {
