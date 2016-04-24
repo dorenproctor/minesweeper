@@ -18,6 +18,7 @@ public class MineField extends Application {
     public int minesLeft;
     public int unexposedCells;
     public Cell[][] cellArray = new Cell[xTiles][yTiles];
+    public boolean exploded;
 
 
     public void generateBoard() {
@@ -43,7 +44,7 @@ public class MineField extends Application {
         minesLeft = 0;
         while (minesLeft < numMines) {
             Cell randomCell = cellArray[rnd.nextInt(cellArray.length)][rnd.nextInt(cellArray[0].length)];
-            randomCell.hasBomb = true;
+            randomCell.hasMine = true;
             minesLeft++;
         }
     }
@@ -53,51 +54,67 @@ public class MineField extends Application {
             for(int y = 0; y< yTiles; y++) { //for every cell
                 Cell cell = cellArray[x][y];
                 cell.addNeighbors(x, y, cellArray); //find neighbors
-                for(Cell neighbor : cell.neighbors) { //for each neighbor
-                    if (neighbor != null && neighbor.hasBomb) {
-                        cell.neighboringMines++;
-                    }
-                }
             }
         }
     }
 
     public boolean mark(int column, int row) { //inverts cell.marked
-        cellArray[column][row].marked = !cellArray[column][row].marked;
+        Cell cell = cellArray[column][row];
+        if (cell.exposed) //can't mark exposed cells
+            return false;
+        cell.marked = !cell.marked; //invert marked
+        if (cell.marked)
+            cell.btn.setText("X");
+        else
+            cell.btn.setText("");
+
         return cellArray[column][row].marked;
     }
 
 
     public int expose(int column, int row) { //yay for recursion
         Cell cell = cellArray[column][row];
-        if (cell.marked)
+        if (cell.marked) //can't expose marked cells
             return -2;
-        if (cell.exposed)
-            return -3;
+
+
+        if (!cell.exposed)
+            unexposedCells--; //one less cell left to expose
+        cell.btn.setStyle("-fx-background-color: lightgray");
+
+        if (cell.hasMine) { //game over
+            cell.btn.setText("!");
+            exploded = true;
+            return -1;
+        }
+
+        if (cell.exposed) { //if the proper amount of neighbors are marked on exposed cell
+            int neighborsMarked = 0; //then expose the neighboring cells
+            for(Cell neighbor : cell.neighbors)
+                if (neighbor != null && neighbor.marked)
+                    neighborsMarked++;
+            if (neighborsMarked == cell.neighboringMines)
+                exposeNeighbors(cell);
+        }
 
         cell.exposed = true;
-        unexposedCells--; //one less cell left to expose
-
-        if (cell.hasBomb) //game over
-            return -1;
 
         if (cell.neighboringMines == 0) { //next to no mines
-            for(Cell neighbor : cell.neighbors) { //for each neighbor
-                if (neighbor != null && neighbor.neighboringMines == 0) { //next to no mines
-                    if (isExposed(neighbor.x,neighbor.y) == 0) //because guidelines
-                        expose(neighbor.x,neighbor.y); //expose the neighbor!
-                }
-            }
+            exposeNeighbors(cell);
             return 0;
         }
 
-        return cell.neighboringMines; //should never happen
+        cell.btn.setText(Integer.toString(cell.neighboringMines)); //show value
+        return cell.neighboringMines;
     }
 
-    public int isExposed(int column, int row) {
-        if (cellArray[column][row].exposed) return 1;
-        else return 0; //returning int instead of boolean because of guidelines
+    private void exposeNeighbors(Cell cell) {
+        for(Cell neighbor : cell.neighbors) //for each neighbor
+            if (neighbor != null)
+                if (!neighbor.exposed)
+                    expose(neighbor.x,neighbor.y); //expose the neighbor!
     }
+
 
     public int unexposedCount() {
         return unexposedCells; //number of unexposed cells

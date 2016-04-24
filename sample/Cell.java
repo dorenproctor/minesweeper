@@ -3,7 +3,7 @@ package sample;
 import javafx.scene.control.Button;
 
 public class Cell {
-    public boolean hasBomb;
+    public boolean hasMine;
     public boolean exposed;
     public boolean marked;
     public Cell[] neighbors = new Cell[8]; //up to 8 neighbors
@@ -21,9 +21,12 @@ public class Cell {
                 for (int j = -1; j <= 1; j++) {
                     if ( (y+j > -1) && (y+j < cellArray[0].length) && !(i==0 && j==0)) {
                         neighbors[numNeighbors++] = cellArray[x+i][y+j];
+                        if (cellArray[x+i][y+j].hasMine) {
+                            neighboringMines++;
+                        }
                     } //if (not out of bounds && not current cell)
                 }           //add to neighbors array
-            }
-        }
+            }               //if (neighbor has a mine)
+        }                       //add a mine to neighboringMines
     }
 }
