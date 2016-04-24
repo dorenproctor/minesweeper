@@ -19,15 +19,22 @@ public class Controller {
     private Button startButton;
     @FXML
     TextField winOrLoseText;
+    @FXML
+    TextField safeCellsLeft;
+    @FXML
+    TextField minesLeft;
+
 
     @FXML
     private void initialize() { //happens immediately when run
         System.out.println("initializing");
         ObservableList<String> difficulties = FXCollections.observableArrayList(
-                "easy", "medium", "hard");
+                "Beginner", "Intermediate", "Expert");
         difficultyBox.setItems(difficulties);
-        difficultyBox.setValue("easy");
+        difficultyBox.setValue("Beginner");
         winOrLoseText.setStyle("-fx-background-color: transparent");
+        safeCellsLeft.setStyle("-fx-background-color: transparent");
+        minesLeft.setStyle("-fx-background-color: transparent");
 
         startGame();
     }
@@ -35,22 +42,31 @@ public class Controller {
     @FXML
     private void startGame() { //happens when first run or when startButton is clicked
         pane.getChildren().removeAll();
+        setDifficulty();
 
         MineField mf = new MineField();
         mf.generateBoard();
         System.out.println("new game started");
-        //System.out.println("x_tot:" + mf.xTiles + "  y_tot:" + mf.yTiles);
-
-        addMinefieldButtons(mf);
         pane.setPrefHeight(800);
         pane.setStyle("-fx-background-color: lightgray");
         winOrLoseText.setText("");
+        addMinefieldButtons(mf);
+    }
+
+    private void setDifficulty() {
+        if (difficultyBox.getValue() == "Beginner") {
+
+        }else if (difficultyBox.getValue() == "Intermediate") {
+
+        }else if (difficultyBox.getValue() == "Expert") {
+
+        }
+
     }
 
     private void addMinefieldButtons(MineField mf) {
         for (int x = 0; x < mf.xTiles; x++) {
             for (int y = 0; y < mf.yTiles; y++) {
-                //System.out.println("X:" + x + "  Y:" + y);
                 Button btn = mf.cellArray[x][y].btn;
                 btn.setLayoutX(30*x);
                 btn.setLayoutY(30*y);
@@ -60,13 +76,13 @@ public class Controller {
                 //btn.setStyle("-fx-background-radius: 10,10");
 
                 pane.getChildren().add(btn);
-                final int i = x; //need final variable for lambda expression
+                final int i = x; //need final variables for lambda expression
                 final int j = y;
                 btn.setOnMouseClicked(event -> {
                     if (event.getButton() == MouseButton.SECONDARY) { //right click
                         mf.mark(i, j);
-                    }
-                    else {                                           //left click
+                        cellClicked(mf);
+                    } else {                                           //left click
                         mf.expose(i, j);
                         cellClicked(mf);
                     }
@@ -76,12 +92,14 @@ public class Controller {
     }
 
     private void cellClicked(MineField mf) {
+        safeCellsLeft.setText("Safe Cells Left: "+mf.unexposedCount());
+        minesLeft.setText("Mines Left: "+mf.minesLeft);
         if (mf.exploded) {
-            winOrLoseText.setText("        GAME OVER");
+            winOrLoseText.setText("    GAME OVER");
             freezeCells(mf);
         }
         if (mf.unexposedCells == 0) {
-            winOrLoseText.setText("        YOU WIN");
+            winOrLoseText.setText("    YOU WIN");
             freezeCells(mf);
         }
     }
@@ -90,15 +108,12 @@ public class Controller {
         for (int x = 0; x < mf.xTiles; x++) {
             for (int y = 0; y < mf.yTiles; y++) {
                 Button btn = mf.cellArray[x][y].btn;
-                if (mf.exploded && mf.cellArray[x][y].hasMine)
-                    btn.setText("!");
-                final int i = x; //need final variable for lambda expression
-                final int j = y;
+                if (mf.exploded && mf.cellArray[x][y].hasMine) //when you lost
+                    btn.setText("!"); //it reveals all the mines
                 btn.setOnMouseClicked(event -> {
                     if (event.getButton() == MouseButton.SECONDARY) { //right click
                         //do nothing
-                    }
-                    else {                                           //left click
+                    } else {                                           //left click
                         //do nothing
                     }
                 });

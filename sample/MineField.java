@@ -22,9 +22,7 @@ public class MineField extends Application {
 
 
     public void generateBoard() {
-        //xTiles = (W / tileSize);
-        //yTiles = (H / tileSize);
-        //cellArray = new Cell[xTiles][yTiles];
+        unexposedCells = 0;
         for(int x = 0; x< xTiles; x++) {
             for(int y = 0; y< yTiles; y++) { //for every cell
                 Cell newCell = new Cell();
@@ -44,8 +42,10 @@ public class MineField extends Application {
         minesLeft = 0;
         while (minesLeft < numMines) {
             Cell randomCell = cellArray[rnd.nextInt(cellArray.length)][rnd.nextInt(cellArray[0].length)];
-            randomCell.hasMine = true;
-            minesLeft++;
+            if (!randomCell.hasMine) { //prevents the same cell from getting multiple mines
+                randomCell.hasMine = true;
+                minesLeft++;
+            }
         }
     }
 
@@ -63,10 +63,13 @@ public class MineField extends Application {
         if (cell.exposed) //can't mark exposed cells
             return false;
         cell.marked = !cell.marked; //invert marked
-        if (cell.marked)
+        if (cell.marked) {
             cell.btn.setText("X");
-        else
+            minesLeft--;
+        }else {
             cell.btn.setText("");
+            minesLeft++;
+        }
 
         return cellArray[column][row].marked;
     }
@@ -77,9 +80,9 @@ public class MineField extends Application {
         if (cell.marked) //can't expose marked cells
             return -2;
 
-
         if (!cell.exposed)
             unexposedCells--; //one less cell left to expose
+        cell.exposed = true;
         cell.btn.setStyle("-fx-background-color: lightgray");
 
         if (cell.hasMine) { //game over
@@ -88,16 +91,14 @@ public class MineField extends Application {
             return -1;
         }
 
-        if (cell.exposed) { //if the proper amount of neighbors are marked on exposed cell
-            int neighborsMarked = 0; //then expose the neighboring cells
+        if (cell.exposed) { //if the proper amount of neighbors are marked around the
+            int neighborsMarked = 0; //exposed cell then expose the neighboring cells
             for(Cell neighbor : cell.neighbors)
                 if (neighbor != null && neighbor.marked)
                     neighborsMarked++;
             if (neighborsMarked == cell.neighboringMines)
                 exposeNeighbors(cell);
         }
-
-        cell.exposed = true;
 
         if (cell.neighboringMines == 0) { //next to no mines
             exposeNeighbors(cell);
