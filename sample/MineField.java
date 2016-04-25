@@ -1,19 +1,19 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
+
 import java.util.Random;
 
 public class MineField extends Application {
 
-    public int tileSize = 40;
-    public int H = 800;
-    public int W = 720;
+
+    public int H = 20;
+    public int W = 20;
     public int xTiles;
     public int yTiles;
     public int numMines = 20;
@@ -21,14 +21,14 @@ public class MineField extends Application {
     public int unexposedCells;
     public Cell[][] cellArray;
     public boolean exploded;
-    public int windowWidth = 1000;
-    public int windowHeight = 1030;
+    public int windowWidth = 640;
+    public int windowHeight = 670;
 
 
     public void generateBoard() {
         unexposedCells = 0;
-        xTiles = (W / tileSize);
-        yTiles = (H / tileSize);
+        xTiles = W;
+        yTiles = H;
         cellArray = new Cell[xTiles][yTiles];
         for(int x = 0; x< xTiles; x++) {
             for(int y = 0; y< yTiles; y++) { //for every cell
@@ -44,6 +44,7 @@ public class MineField extends Application {
         calculateTileValues();
     }
 
+
     private void generateMines() {
         Random rnd = new Random();
         minesLeft = 0;
@@ -56,6 +57,7 @@ public class MineField extends Application {
         }
     }
 
+
     private void calculateTileValues() {
         for(int x = 0; x< xTiles; x++) {
             for(int y = 0; y< yTiles; y++) { //for every cell
@@ -64,6 +66,7 @@ public class MineField extends Application {
             }
         }
     }
+
 
     public boolean mark(int column, int row) { //inverts cell.marked
         Cell cell = cellArray[column][row];
@@ -87,16 +90,17 @@ public class MineField extends Application {
         if (cell.marked) //can't expose marked cells
             return -2;
 
-        if (!cell.exposed)
-            unexposedCells--; //one less cell left to expose
-        cell.exposed = true;
-        cell.btn.setStyle("-fx-background-color: lightgray");
-
         if (cell.hasMine) { //game over
             cell.btn.setText("!");
             exploded = true;
             return -1;
         }
+
+        if (!cell.exposed)
+            unexposedCells--; //one less cell left to expose
+        cell.exposed = true;
+        cell.btn.setStyle("-fx-background-color: lightgray");
+
 
         if (cell.exposed) { //if the proper amount of neighbors are marked around the
             int neighborsMarked = 0; //exposed cell then expose the neighboring cells
@@ -116,6 +120,7 @@ public class MineField extends Application {
         return cell.neighboringMines;
     }
 
+
     private void exposeNeighbors(Cell cell) {
         for(Cell neighbor : cell.neighbors) //for each neighbor
             if (neighbor != null)
@@ -128,6 +133,7 @@ public class MineField extends Application {
         return unexposedCells; //number of unexposed cells
     }
 
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("minesweeper.fxml"));
@@ -136,9 +142,6 @@ public class MineField extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setResizable(false);
-
-
-
     }
 
 

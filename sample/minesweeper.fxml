@@ -6,13 +6,13 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
-      <HBox prefHeight="30.0" prefWidth="510.0">
+      <HBox prefHeight="30.0" prefWidth="640.0">
          <children>
             <ChoiceBox fx:id="difficultyBox" prefWidth="150.0" />
             <Button fx:id="startButton" mnemonicParsing="false" onMouseClicked="#startGame" prefHeight="25.0" prefWidth="76.0" text="Start" />
             <TextField fx:id="winOrLoseText" prefHeight="25.0" prefWidth="117.0" />
-            <TextField fx:id="minesLeft" prefHeight="25.0" prefWidth="107.0" />
-            <TextField fx:id="safeCellsLeft" prefHeight="25.0" prefWidth="109.0" />
+            <TextField fx:id="minesLeft" prefHeight="25.0" prefWidth="125.0" />
+            <TextField fx:id="safeCellsLeft" prefHeight="25.0" prefWidth="127.0" />
          </children>
       </HBox>
       <Pane fx:id="pane" prefHeight="372.0" prefWidth="600.0" />

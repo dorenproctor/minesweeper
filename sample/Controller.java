@@ -8,8 +8,11 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 public class Controller {
+
+    private int cellSize;
 
     @FXML
     private ChoiceBox difficultyBox;
@@ -39,13 +42,12 @@ public class Controller {
         startGame();
     }
 
+
     @FXML
     private void startGame() { //happens when first run or when startButton is clicked
         pane.getChildren().clear();
         MineField mf = new MineField();
-
         setDifficulty(mf);
-
         mf.generateBoard();
         System.out.println("new game started");
         pane.setPrefHeight(1000);
@@ -56,29 +58,34 @@ public class Controller {
         addMinefieldButtons(mf);
     }
 
+
     private void setDifficulty(MineField mf) {
         if (difficultyBox.getValue() == "Beginner") {
-            mf.H = 320;
-            mf.W = 320;
+            mf.H = 8;
+            mf.W = 8;
             mf.numMines = 10;
+            cellSize = 80;
         }else if (difficultyBox.getValue() == "Intermediate") {
-            mf.H = 640;
-            mf.W = 640;
+            mf.H = 16;
+            mf.W = 16;
             mf.numMines = 40;
+            cellSize = 40;
         }else if (difficultyBox.getValue() == "Expert") {
-            mf.H = 640;
-            mf.W = 1240;
+            mf.H = 24;
+            mf.W = 24;
             mf.numMines = 99;
+            cellSize = 27;
         }
     }
+
 
     private void addMinefieldButtons(MineField mf) {
         for (int x = 0; x < mf.xTiles; x++) {
             for (int y = 0; y < mf.yTiles; y++) {
                 Button btn = mf.cellArray[x][y].btn;
-                btn.setLayoutX(30*x);
-                btn.setLayoutY(30*y);
-                btn.setPrefSize(30,30);
+                btn.setLayoutX(cellSize*x);
+                btn.setLayoutY(cellSize*y);
+                btn.setPrefSize(cellSize,cellSize);
                 btn.setStyle("-fx-background-insets: 0,1,2");
                 btn.setStyle("-fx-padding: 8 8 8 8;");
 
@@ -98,6 +105,7 @@ public class Controller {
         }
     }
 
+
     private void cellClicked(MineField mf) {
         safeCellsLeft.setText("Safe Cells Left: "+mf.unexposedCount());
         minesLeft.setText("Mines Left: "+mf.minesLeft);
@@ -110,6 +118,7 @@ public class Controller {
             freezeCells(mf);
         }
     }
+
 
     private void freezeCells(MineField mf) {
         for (int x = 0; x < mf.xTiles; x++) {
