@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
 public class Main extends Application {
 
     public int windowWidth = 640;
@@ -17,8 +16,8 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("minesweeper.fxml"));
         primaryStage.setTitle("Minesweeper");
         primaryStage.setScene(new Scene(root, windowWidth, windowHeight));
-        primaryStage.show();
         primaryStage.setResizable(false);
+        primaryStage.show();
     }
 
 

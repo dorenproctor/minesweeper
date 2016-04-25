@@ -8,7 +8,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 
 public class Controller {
 
@@ -17,9 +16,9 @@ public class Controller {
     @FXML
     private ChoiceBox difficultyBox;
     @FXML
-    private Pane pane;
-    @FXML
     private Button startButton;
+    @FXML
+    private Pane pane;
     @FXML
     TextField winOrLoseText;
     @FXML
@@ -35,10 +34,6 @@ public class Controller {
                 "Beginner", "Intermediate", "Expert");
         difficultyBox.setItems(difficulties);
         difficultyBox.setValue("Beginner");
-        winOrLoseText.setStyle("-fx-background-color: transparent");
-        safeCellsLeft.setStyle("-fx-background-color: transparent");
-        minesLeft.setStyle("-fx-background-color: transparent");
-
         startGame();
     }
 
@@ -49,13 +44,11 @@ public class Controller {
         MineField mf = new MineField();
         setDifficulty(mf);
         mf.generateBoard();
-        System.out.println("new game started");
-        pane.setPrefHeight(1000);
-        pane.setStyle("-fx-background-color: lightgray");
         winOrLoseText.setText("");
         safeCellsLeft.setText("Safe Cells Left: "+mf.unexposedCount());
         minesLeft.setText("Mines Left: "+mf.minesLeft);
         addMinefieldButtons(mf);
+        System.out.println("new game started");
     }
 
 
@@ -89,7 +82,6 @@ public class Controller {
                 btn.setStyle("-fx-background-insets: 0,1,2");
                 btn.setStyle("-fx-padding: 8 8 8 8;");
 
-
                 pane.getChildren().add(btn);
                 final int i = x; //need final variables for lambda expression
                 final int j = y;
@@ -101,7 +93,7 @@ public class Controller {
                         mf.expose(i, j);
                         cellClicked(mf);
                     }
-                    });
+                });
             }
         }
     }
@@ -111,11 +103,11 @@ public class Controller {
         safeCellsLeft.setText("Safe Cells Left: "+mf.unexposedCount());
         minesLeft.setText("Mines Left: "+mf.minesLeft);
         if (mf.exploded) {
-            winOrLoseText.setText("    GAME OVER");
+            winOrLoseText.setText("GAME OVER");
             freezeCells(mf);
         }
         if (mf.unexposedCells == 0) {
-            winOrLoseText.setText("    YOU WIN");
+            winOrLoseText.setText("YOU WIN");
             freezeCells(mf);
         }
     }
@@ -125,12 +117,10 @@ public class Controller {
         for (int x = 0; x < mf.xTiles; x++) {
             for (int y = 0; y < mf.yTiles; y++) {
                 Button btn = mf.cellArray[x][y].btn;
-                if (mf.exploded && mf.cellArray[x][y].hasMine) //when you lost
+                if (mf.exploded && mf.cellArray[x][y].hasMine) //when you lose
                     btn.setText("!"); //it reveals all the mines
-                btn.setOnMouseClicked(event -> {
-                    if (event.getButton() == MouseButton.SECONDARY) { //right click
-                        //do nothing
-                    } else {                                           //left click
+                btn.setOnMouseClicked(event -> { //clicks don't do anything
+                    if (event.getButton() == MouseButton.SECONDARY) {
                         //do nothing
                     }
                 });

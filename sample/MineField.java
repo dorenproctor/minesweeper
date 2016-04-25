@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class MineField {//} extends Application {
 
-
     public int H = 20;
     public int W = 20;
     public int xTiles;
@@ -12,9 +11,8 @@ public class MineField {//} extends Application {
     public int numMines = 20;
     public int minesLeft;
     public int unexposedCells;
-    public Cell[][] cellArray;
     public boolean exploded;
-
+    public Cell[][] cellArray;
 
 
     public void generateBoard() {
@@ -54,7 +52,7 @@ public class MineField {//} extends Application {
         for(int x = 0; x< xTiles; x++) {
             for(int y = 0; y< yTiles; y++) { //for every cell
                 Cell cell = cellArray[x][y];
-                cell.addNeighbors(x, y, cellArray); //find neighbors
+                cell.searchNeighbors(x, y, cellArray); //find neighbors and mines
             }
         }
     }
@@ -115,9 +113,8 @@ public class MineField {//} extends Application {
 
     private void exposeNeighbors(Cell cell) {
         for(Cell neighbor : cell.neighbors) //for each neighbor
-            if (neighbor != null)
-                if (!neighbor.exposed)
-                    expose(neighbor.x,neighbor.y); //expose the neighbor!
+            if (neighbor != null && !neighbor.exposed)
+                expose(neighbor.x,neighbor.y); //expose the neighbor!
     }
 
 
@@ -125,19 +122,4 @@ public class MineField {//} extends Application {
         return unexposedCells; //number of unexposed cells
     }
 
-/*
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("minesweeper.fxml"));
-        primaryStage.setTitle("Minesweeper");
-        Scene scene = new Scene(root, windowWidth, windowHeight);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        primaryStage.setResizable(false);
-    }
-
-
-    public static void main(String[] args) {
-        launch(args);
-    }*/
 }

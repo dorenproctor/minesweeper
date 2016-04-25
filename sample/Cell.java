@@ -3,18 +3,19 @@ package sample;
 import javafx.scene.control.Button;
 
 public class Cell {
+
     public boolean hasMine;
     public boolean exposed;
     public boolean marked;
-    public Cell[] neighbors = new Cell[8]; //up to 8 neighbors
     public int numNeighbors;
     public int neighboringMines;
     public int x, y;
+    public Cell[] neighbors = new Cell[8]; //up to 8 neighbors
     public Button btn = new Button();
 
 
     /*** Find neighbors and neighboringMines in a double Cell array based on its x and y position ***/
-    public void addNeighbors( int x, int y, Cell[][] cellArray) {
+    public void searchNeighbors( int x, int y, Cell[][] cellArray) {
         numNeighbors = 0;
         for (int i = -1; i <= 1; i++) {
             if ( (x+i > -1) && (x+i < cellArray.length) ) {
