@@ -41,27 +41,35 @@ public class Controller {
 
     @FXML
     private void startGame() { //happens when first run or when startButton is clicked
-        pane.getChildren().removeAll();
-        setDifficulty();
-
+        pane.getChildren().clear();
         MineField mf = new MineField();
+
+        setDifficulty(mf);
+
         mf.generateBoard();
         System.out.println("new game started");
-        pane.setPrefHeight(800);
+        pane.setPrefHeight(1000);
         pane.setStyle("-fx-background-color: lightgray");
         winOrLoseText.setText("");
+        safeCellsLeft.setText("Safe Cells Left: "+mf.unexposedCount());
+        minesLeft.setText("Mines Left: "+mf.minesLeft);
         addMinefieldButtons(mf);
     }
 
-    private void setDifficulty() {
+    private void setDifficulty(MineField mf) {
         if (difficultyBox.getValue() == "Beginner") {
-
+            mf.H = 320;
+            mf.W = 320;
+            mf.numMines = 10;
         }else if (difficultyBox.getValue() == "Intermediate") {
-
+            mf.H = 640;
+            mf.W = 640;
+            mf.numMines = 40;
         }else if (difficultyBox.getValue() == "Expert") {
-
+            mf.H = 640;
+            mf.W = 1240;
+            mf.numMines = 99;
         }
-
     }
 
     private void addMinefieldButtons(MineField mf) {
@@ -73,7 +81,6 @@ public class Controller {
                 btn.setPrefSize(30,30);
                 btn.setStyle("-fx-background-insets: 0,1,2");
                 btn.setStyle("-fx-padding: 8 8 8 8;");
-                //btn.setStyle("-fx-background-radius: 10,10");
 
                 pane.getChildren().add(btn);
                 final int i = x; //need final variables for lambda expression

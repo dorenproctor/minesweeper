@@ -13,7 +13,7 @@ public class Cell {
     public Button btn = new Button();
 
 
-    /*** Find neighbors in a double Cell array based on its x and y position ***/
+    /*** Find neighbors and neighboringMines in a double Cell array based on its x and y position ***/
     public void addNeighbors( int x, int y, Cell[][] cellArray) {
         numNeighbors = 0;
         for (int i = -1; i <= 1; i++) {
