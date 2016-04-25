@@ -1,15 +1,8 @@
 package sample;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
-
 import java.util.Random;
 
-public class MineField extends Application {
+public class MineField {//} extends Application {
 
 
     public int H = 20;
@@ -21,8 +14,7 @@ public class MineField extends Application {
     public int unexposedCells;
     public Cell[][] cellArray;
     public boolean exploded;
-    public int windowWidth = 640;
-    public int windowHeight = 670;
+
 
 
     public void generateBoard() {
@@ -133,7 +125,7 @@ public class MineField extends Application {
         return unexposedCells; //number of unexposed cells
     }
 
-
+/*
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("minesweeper.fxml"));
@@ -147,5 +139,5 @@ public class MineField extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }
+    }*/
 }
