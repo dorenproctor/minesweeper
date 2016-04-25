@@ -88,12 +88,6 @@ public class MineField {//} extends Application {
             return -1;
         }
 
-        if (!cell.exposed)
-            unexposedCells--; //one less cell left to expose
-        cell.exposed = true;
-        cell.btn.setStyle("-fx-background-color: lightgray");
-
-
         if (cell.exposed) { //if the proper amount of neighbors are marked around the
             int neighborsMarked = 0; //exposed cell then expose the neighboring cells
             for(Cell neighbor : cell.neighbors)
@@ -102,6 +96,12 @@ public class MineField {//} extends Application {
             if (neighborsMarked == cell.neighboringMines)
                 exposeNeighbors(cell);
         }
+
+        if (!cell.exposed)
+            unexposedCells--; //one less cell left to expose
+        cell.exposed = true;
+        cell.btn.setStyle("-fx-border-color: darkgray; -fx-background-color: lightgray");
+
 
         if (cell.neighboringMines == 0) { //next to no mines
             exposeNeighbors(cell);

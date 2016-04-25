@@ -89,6 +89,7 @@ public class Controller {
                 btn.setStyle("-fx-background-insets: 0,1,2");
                 btn.setStyle("-fx-padding: 8 8 8 8;");
 
+
                 pane.getChildren().add(btn);
                 final int i = x; //need final variables for lambda expression
                 final int j = y;
