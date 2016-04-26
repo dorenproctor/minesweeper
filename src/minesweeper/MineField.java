@@ -78,6 +78,7 @@ public class MineField {
 
         if (cell.hasMine) { //game over
             cell.btn.setText("!");
+            cell.btn.setStyle("-fx-border-color: darkgray; -fx-background-color: red");
             exploded = true;
             return -1;
         }
