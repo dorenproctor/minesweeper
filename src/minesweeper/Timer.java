@@ -1,3 +1,4 @@
+/* Author: Doren Proctor */
 package minesweeper;
 
 public class Timer {

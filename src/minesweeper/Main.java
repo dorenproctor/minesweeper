@@ -1,3 +1,6 @@
+/* Author: Doren Proctor
+*  Programming Tools - CS224
+*  WSUV Spring 2016 */
 package minesweeper;
 
 import javafx.application.Application;

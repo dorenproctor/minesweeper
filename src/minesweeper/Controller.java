@@ -1,3 +1,4 @@
+/* Author: Doren Proctor */
 package minesweeper;
 
 import javafx.collections.FXCollections;

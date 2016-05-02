@@ -1,3 +1,4 @@
+/* Author: Doren Proctor */
 package minesweeper;
 
 import java.util.Random;
